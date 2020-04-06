@@ -60,7 +60,9 @@ install_plugins::
 	pulumi plugin install resource tls 0.18.0
 
 lint::
-	#golangci-lint run
+	for DIR in "provider" "sdk" ; do \
+		pushd $$DIR && golangci-lint run -c ../.golangci.yml --timeout 5m && popd ; \
+	done
 
 install:: tfgen provider
 	[ ! -e "$(PULUMI_NODE_MODULES)/$(NODE_MODULE_NAME)" ] || rm -rf "$(PULUMI_NODE_MODULES)/$(NODE_MODULE_NAME)"
